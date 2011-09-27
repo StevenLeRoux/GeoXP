@@ -16,7 +16,7 @@ BASEURL = 'http://planet.openstreetmap.org'
 FREQ = '/minute-replicate/'
 STATE = 'state.txt'
 FILEEXT = '.osc.gz'
-TMPDIR = '/tmp/'
+TMPDIFF = '/tmp/diff.osm'
 LATEST = '/tmp/latest_osmdiff'
 LASTSEQ = '0'
 
@@ -80,7 +80,7 @@ def upload_latest():
 def convert_latest():
   print("Converting")
   r = os.system('echo "SECRET %s"> /tmp/diff.osm' % SECRET)
-  r = os.system('zcat /tmp/latest_osmdiff |grep "<node"|grep -v "</node>"|awk \'BEGIN { FS = "lat" } ; {print $2}\'|sed -e \'s/="/:/\' -e \'s/"\ lon="/:/\' -e \'s/"/:1:/\' -e \'s/\/*>$//\' >> /tmp/diff.osm')
+  r = os.system('zcat /tmp/latest_osmdiff |grep "<node"|grep -v "</node>"|awk \'BEGIN { FS = "lat" } ; {print $2}\'|sed -e \'s/="/:/\' -e \'s/"\ lon="/:/\' -e \'s/"/:1:/\' -e \'s/\/*>$//\' >> %s' % TMPDIFF)
   return (r == 0)
 
 
